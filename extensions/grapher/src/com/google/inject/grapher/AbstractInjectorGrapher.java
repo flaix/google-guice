@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2011 Google Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,6 +16,8 @@
 
 package com.google.inject.grapher;
 
+import com.google.common.collect.SetMultimap;
+import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
@@ -42,6 +44,7 @@ public abstract class AbstractInjectorGrapher implements InjectorGrapher {
 
   /**
    * Parameters used to override default settings of the grapher.
+   *
    * @since 4.0
    */
   public static final class GrapherParameters {
@@ -98,11 +101,13 @@ public abstract class AbstractInjectorGrapher implements InjectorGrapher {
     this.edgeCreator = options.getEdgeCreator();
   }
 
-  @Override public final void graph(Injector injector) throws IOException {
+  @Override
+  public final void graph(Injector injector) throws IOException {
     graph(injector, rootKeySetCreator.getRootKeys(injector));
   }
 
-  @Override public final void graph(Injector injector, Set<Key<?>> root) throws IOException {
+  @Override
+  public final void graph(Injector injector, Set<Key<?>> root) throws IOException {
     reset();
 
     Iterable<Binding<?>> bindings = getBindings(injector, root);
@@ -154,8 +159,8 @@ public abstract class AbstractInjectorGrapher implements InjectorGrapher {
 
   private void createEdges(Iterable<Edge> edges, Map<NodeId, NodeId> aliases) throws IOException {
     for (Edge edge : edges) {
-      edge = edge.copy(resolveAlias(aliases, edge.getFromId()),
-          resolveAlias(aliases, edge.getToId()));
+      edge =
+          edge.copy(resolveAlias(aliases, edge.getFromId()), resolveAlias(aliases, edge.getToId()));
       if (!edge.getFromId().equals(edge.getToId())) {
         if (edge instanceof BindingEdge) {
           newBindingEdge((BindingEdge) edge);
@@ -167,16 +172,16 @@ public abstract class AbstractInjectorGrapher implements InjectorGrapher {
   }
 
   private NodeId resolveAlias(Map<NodeId, NodeId> aliases, NodeId nodeId) {
-    return aliases.containsKey(nodeId) ? aliases.get(nodeId) : nodeId;
+    return aliases.getOrDefault(nodeId, nodeId);
   }
 
   /**
-   * Transitively resolves aliases. Given aliases (X to Y) and (Y to Z), it will return mappings
-   * (X to Z) and (Y to Z).
+   * Transitively resolves aliases. Given aliases (X to Y) and (Y to Z), it will return mappings (X
+   * to Z) and (Y to Z).
    */
   private Map<NodeId, NodeId> resolveAliases(Iterable<Alias> aliases) {
     Map<NodeId, NodeId> resolved = Maps.newHashMap();
-    Map<NodeId, Set<NodeId>> inverse = Maps.newHashMap();
+    SetMultimap<NodeId, NodeId> inverse = HashMultimap.create();
 
     for (Alias alias : aliases) {
       NodeId from = alias.getFromId();
@@ -185,18 +190,15 @@ public abstract class AbstractInjectorGrapher implements InjectorGrapher {
         to = resolved.get(to);
       }
       resolved.put(from, to);
-      if (inverse.get(to) == null) {
-        inverse.put(to, Sets.<NodeId>newHashSet());
-      }
-      inverse.get(to).add(from);
+      inverse.put(to, from);
 
       Set<NodeId> prev = inverse.get(from);
       if (prev != null) {
         for (NodeId id : prev) {
           resolved.remove(id);
-          inverse.get(from).remove(id);
+          inverse.remove(from, id);
           resolved.put(id, to);
-          inverse.get(to).add(id);
+          inverse.put(to, id);
         }
       }
     }

@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2008 Google Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,11 +33,13 @@ final class LookupProcessor extends AbstractProcessor {
     super(errors);
   }
 
-  @Override public <T> Boolean visit(MembersInjectorLookup<T> lookup) {
+  @Override
+  public <T> Boolean visit(MembersInjectorLookup<T> lookup) {
     try {
-      MembersInjector<T> membersInjector
-          = injector.membersInjectorStore.get(lookup.getType(), errors);
+      MembersInjector<T> membersInjector =
+          injector.membersInjectorStore.get(lookup.getType(), errors);
       lookup.initializeDelegate(membersInjector);
+      injector.state.putMembersInjectorLookup(lookup);
     } catch (ErrorsException e) {
       errors.merge(e.getErrors()); // TODO: source
     }
@@ -45,11 +47,13 @@ final class LookupProcessor extends AbstractProcessor {
     return true;
   }
 
-  @Override public <T> Boolean visit(ProviderLookup<T> lookup) {
+  @Override
+  public <T> Boolean visit(ProviderLookup<T> lookup) {
     // ensure the provider can be created
     try {
       Provider<T> provider = injector.getProviderOrThrow(lookup.getDependency(), errors);
       lookup.initializeDelegate(provider);
+      injector.state.putProviderLookup(lookup);
     } catch (ErrorsException e) {
       errors.merge(e.getErrors()); // TODO: source
     }

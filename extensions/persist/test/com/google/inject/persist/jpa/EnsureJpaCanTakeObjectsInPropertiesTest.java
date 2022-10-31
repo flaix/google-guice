@@ -49,7 +49,7 @@ public class EnsureJpaCanTakeObjectsInPropertiesTest extends TestCase {
 
     @Override
     protected void configure() {
-      Map<String, Object> p = new HashMap<String, Object>();
+      Map<String, Object> p = new HashMap<>();
 
       p.put(Environment.CONNECTION_PROVIDER, InjectedDataSourceConnectionProvider.class.getName());
       if (passDataSource) {
@@ -93,6 +93,7 @@ public class EnsureJpaCanTakeObjectsInPropertiesTest extends TestCase {
     //startup persistence
     injector.getInstance(PersistService.class).start();
   }
+
   public void testWorksIfPassDataSource() {
     startPersistService(true);
   }

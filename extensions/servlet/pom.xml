@@ -6,11 +6,11 @@
   <parent>
     <groupId>com.google.inject.extensions</groupId>
     <artifactId>extensions-parent</artifactId>
-    <version>4.0</version>
+    <version>4.2.3</version>
   </parent>
 
-  <artifactId>guice-servlet</artifactId>  
-  <version>4.0-gb2</version>
+  <artifactId>guice-servlet</artifactId>
+  <version>4.2.3-gb2</version>
 
   <name>Google Guice - Extensions - Servlet</name>
 
@@ -27,6 +27,38 @@
       <version>3.0</version>
       <scope>test</scope>
     </dependency>
+
+    <!--
+     | Since we changed the version for Gitblit,
+     | redefine the dependency on the original version.
+    -->
+    <dependency>
+      <groupId>com.google.inject</groupId>
+      <artifactId>guice</artifactId>
+      <version>4.2.3</version>
+    </dependency>
+    <dependency>
+      <groupId>com.google.inject</groupId>
+      <artifactId>guice</artifactId>
+      <version>4.2.3</version>
+      <classifier>tests</classifier>
+      <scope>test</scope>
+    </dependency>
+
   </dependencies>
 
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-jar-plugin</artifactId>
+        <configuration>
+          <archive>
+            <manifestEntries>
+              <Automatic-Module-Name>com.google.guice.extensions.servlet</Automatic-Module-Name>
+            </manifestEntries>
+          </archive>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 </project>

@@ -1,12 +1,11 @@
 Guice
 ====
 
-**Latest version: [4.0](https://github.com/google/guice/wiki/Guice40)!**
+**Latest release: [4.2.2](https://github.com/google/guice/wiki/Guice422)**
 
-**Documentation:** [User Guide](https://github.com/google/guice/wiki/Motivation), [4.0 javadocs](http://google.github.io/guice/api-docs/4.0/javadoc/packages.html), [Latest javadocs](http://google.github.io/guice/api-docs/latest/javadoc/index.html) <br/>
-**Continuous Integration:** [![Build Status](https://api.travis-ci.org/google/guice.png?branch=master)](https://travis-ci.org/google/guice) <br
-/>
-**Mailing Lists:** [User Mailing List](http://groups.google.com/group/google-guice), [Developer Mailing List](http://groups.google.com/group/google-guice-dev) <br/>
+**Documentation:** [User Guide](https://github.com/google/guice/wiki/Motivation), [4.2.2 javadocs](http://google.github.io/guice/api-docs/4.2.2/javadoc/index.html), [Latest javadocs](http://google.github.io/guice/api-docs/latest/javadoc/index.html) <br/>
+**Continuous Integration:** [![Build Status](https://api.travis-ci.org/google/guice.png?branch=master)](https://travis-ci.org/google/guice) <br/>
+**Mailing Lists:** [User Mailing List](http://groups.google.com/group/google-guice) <br/>
 **License:** [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0)
 
 Put simply, Guice alleviates the need for factories and the use of new in your Java code. Think of Guice's @Inject as the new new. You will still need to write factories in some cases, but your code will not depend directly on them. Your code will be easier to change, unit test and reuse in other contexts.
@@ -21,4 +20,4 @@ For an introduction to Guice and a comparison to new and the factory pattern, se
 
 We've been running Guice in mission critical applications since 2006, and now you can, too. We hope you enjoy it as much as we do.
 
-[![jolt award](http://crazybob.org/jolt.png)](http://joltawards.com)
+[![jolt award](https://user-images.githubusercontent.com/1885701/52603534-0d620380-2e1c-11e9-8cd5-95f0e141fcb0.png)](http://www.drdobbs.com/tools/winners-of-the-18th-jolt-product-excelle/207600666?pgno=6)
